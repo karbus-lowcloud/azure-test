@@ -43,7 +43,7 @@
   },
   {
    "type": "Microsoft.ManagedServices/registrationAssignments",
-   "apiVersion": "2020-02-01-preview",
+   "apiVersion": "2022-10-01",
    "name": "[variables('mspAssignmentName')]",
    "dependsOn": [
     "[resourceId('Microsoft.ManagedServices/registrationDefinitions/', variables('mspRegistrationName'))]"
