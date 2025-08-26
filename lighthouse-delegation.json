@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {},
+  "variables": {
+    "managingTenantId": "a8fb4c7c-c6f1-4555-b31e-9244ac5fdd3e",
+    "principalIds": [
+      "2716e90e-f89e-40c9-8f74-707f63b51db4"
+    ],
+    "contributorRole": "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.ManagedServices/registrationDefinitions",
+      "apiVersion": "2022-10-01",
+      "name": "lowcloud-delegation",
+      "properties": {
+        "description": "Delegate access to lowcloud",
+        "manageeTenantId": "[subscription().tenantId]",
+        "managingTenantId": "[variables('managingTenantId')]",
+        "authorizations": "[array(map(variables('principalIds'), p, createObject('principalId', p, 'roleDefinitionId', variables('contributorRole'), 'principalIdDisplayName', 'lowcloud-operators')))]"
+      }
+    },
+    {
+      "type": "Microsoft.ManagedServices/registrationAssignments",
+      "apiVersion": "2022-10-01",
+      "name": "[guid(subscription().id, 'lowcloud-delegation')]",
+      "properties": {
+        "registrationDefinitionId": "[resourceId('Microsoft.ManagedServices/registrationDefinitions','lowcloud-delegation')]"
+      }
+    }
+  ]
+}
